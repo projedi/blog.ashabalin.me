@@ -3,3 +3,8 @@
 /dist/
 /_site/
 /_cache/
+### https://raw.github.com/github/gitignore/master/Agda.gitignore
+
+*.agdai
+
+
