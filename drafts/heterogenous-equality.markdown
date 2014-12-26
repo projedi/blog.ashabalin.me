@@ -54,3 +54,19 @@ Here is why: `cong : (f : a -> b) -> (x = y) -> (f x = f y)`. `f` has to be the 
 `(::)` has to be the same but it is not because on the left side of `(=)`
 `(::) : a -> Vect (n + 0) a -> Vect (S (n + 0)) a` and on the right side
 `(::) : a -> Vect n a -> Vect (S n) a`. `cons_cong` lifts this requirement.
+
+P.S.
+For doing some propositional equality on vectors Agda has a special operator `_≈_`
+([found here](https://github.com/agda/agda-stdlib/blob/v0.9/src/Data/Vec/Equality.agda#L24)):
+```agda
+data _≈_ : ∀ {n¹} → Vec A n¹ →
+           ∀ {n²} → Vec A n² → Set (s₁ ⊔ s₂) where
+  []-cong  : [] ≈ []
+  _∷-cong_ : ∀ {x¹ n¹} {xs¹ : Vec A n¹}
+               {x² n²} {xs² : Vec A n²}
+               (x¹≈x² : x¹ ≊ x²) (xs¹≈xs² : xs¹ ≈ xs²) →
+               x¹ ∷ xs¹ ≈ x² ∷ xs²
+```
+Using it we can write our lemma as follows
+```{.agda include="Agda2.agda"}
+```
