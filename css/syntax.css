@@ -1,0 +1,71 @@
+pre, code {
+   background-color: #fdf6e3;
+   color: #657b83;
+}
+
+/* Keyword */
+.sourceCode .kw {
+   color: #859900;
+}
+
+/* Data type */
+.sourceCode .dt {
+   color: #b58900;
+}
+
+/* Decimal value */
+.sourceCode .dv {
+   color: #2aa198;
+}
+
+/* BaseN */
+.sourceCode .bn {
+   color: #2aa198;
+}
+
+/* Float */
+.sourceCode .fl {
+   color: #2aa198;
+}
+
+/* Char */
+.sourceCode .ch {
+   color: #2aa198;
+}
+
+/* String */
+.sourceCode .st {
+   color: #2aa198;
+}
+
+/* Comment */
+.sourceCode .co {
+   color: #93a1a1;
+}
+
+/* Other */
+.sourceCode .ot {
+   color: #657b83;
+}
+
+/* Alert */
+.sourceCode .al {
+   color: #b58900;
+   font-weight: bold;
+}
+
+/* Function */
+.sourceCode .fu {
+   color: #268bd2;
+}
+
+/* RegionMarker */
+.sourceCode .re {
+   color: #93a1a1;
+}
+
+/* Error */
+.sourceCode .er {
+   color: #dc322f;
+   font-weight: bold;
+}
