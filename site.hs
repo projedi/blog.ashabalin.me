@@ -1,9 +1,12 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 
 import Control.Applicative
 
-import System.FilePath((</>), dropExtension)
+import Control.Exception(SomeException, catch)
 import Data.Monoid((<>))
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
+import System.FilePath((</>), dropExtension)
 
 import Text.Pandoc(Block(..), Pandoc)
 import Text.Pandoc.Walk(walk)
@@ -43,12 +46,15 @@ main = hakyll $ do
 
    match "templates/*" $ compile templateCompiler
 
+tryWithDefault :: IO a -> a -> IO a
+tryWithDefault m d = catch m (\(_ :: SomeException) -> return d)
+
 extraPostFilesRules :: Rules ()
 extraPostFilesRules = do
    route idRoute
    compile $ do
       path <- drop 2 <$> getResourceFilePath -- drop leading "./"
-      contents <- unsafeCompiler $ readFile path
+      contents <- unsafeCompiler $ (Text.unpack <$> Text.readFile path) `tryWithDefault` ""
       return $ Item (fromFilePath path) contents
 
 postRules :: Identifier -> Context String -> Rules ()
