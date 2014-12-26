@@ -1,17 +1,23 @@
+nav {
+   width: 8em;
+   float: left;
+   text-align: center;
+}
+
 div#body {
    max-width: 50em;
-   margin-left: auto;
+   margin-left: 10em;
    margin-right: auto;
 }
 
-div#content {
+article {
 }
 
-div#footer {
+footer {
     float: right;
     border-top: solid 2px black;
     color: #555;
-    font-size: 0.8em;
+    font-size: small;
     margin-top: 2em;
     padding: 1em;
 }
@@ -19,6 +25,6 @@ div#footer {
 div.info {
    display: block;
    font-style: italic;
-   font-size: 0.8em;
+   font-size: small;
    text-align: right;
 }
