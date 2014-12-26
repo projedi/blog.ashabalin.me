@@ -1,20 +1,24 @@
+div#body {
+   max-width: 50em;
+   margin-left: auto;
+   margin-right: auto;
+}
+
 div#content {
 }
 
 div#footer {
-    display: inline-block;
-    position: absolute;
-    right: 0px;
+    float: right;
     border-top: solid 2px black;
     color: #555;
-    font-size: 12px;
-    margin-top: 30px;
-    padding: 12px 12px 12px 12px;
-    text-align: right;
+    font-size: 0.8em;
+    margin-top: 2em;
+    padding: 1em;
 }
 
 div.info {
-   display: inline-block;
+   display: block;
    font-style: italic;
-   font-size: 12px;
+   font-size: 0.8em;
+   text-align: right;
 }
