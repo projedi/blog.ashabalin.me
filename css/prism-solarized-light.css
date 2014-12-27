@@ -5,14 +5,13 @@
 code,
 pre {
 	color: #657b83;
-	text-shadow: 0 1px white;
-	font-family: Consolas, Monaco, 'Andale Mono', monospace;
+	background: #fdf6e3;
+	font-family: monospace;
 	direction: ltr;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
-	line-height: 1.5;
 
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
@@ -26,39 +25,18 @@ pre {
 
 pre::-moz-selection, pre ::-moz-selection,
 code::-moz-selection, code ::-moz-selection {
-	text-shadow: none;
 	background: #eee8d5;
 }
 
 pre::selection, pre ::selection,
 code::selection, code ::selection {
-	text-shadow: none;
 	background: #eee8d5;
-}
-
-@media print {
-	code,
-	pre {
-		text-shadow: none;
-	}
 }
 
 /* Code blocks */
 pre {
 	padding: 1em;
-	margin: .5em 0;
 	overflow: auto;
-}
-
-:not(pre) > code,
-pre {
-	background: #fdf6e3;
-}
-
-/* Inline code */
-:not(pre) > code {
-	padding: .1em;
-	border-radius: .3em;
 }
 
 .token.comment,
