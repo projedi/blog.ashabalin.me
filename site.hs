@@ -8,7 +8,7 @@ import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import System.FilePath((</>), dropExtension)
 
-import Text.Pandoc(Block(..), Pandoc)
+import Text.Pandoc(Block(..), Pandoc, WriterOptions(..))
 import Text.Pandoc.Walk(walk)
 
 import Hakyll
@@ -66,8 +66,10 @@ postRules templateIdent context = do
    route $ setExtension "html"
    compile $ do
       extrafiles <- getExtraPostFiles
-      pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions
-                  (pandocIncludeFilter extrafiles)
+      pandocCompilerWithTransform
+         defaultHakyllReaderOptions
+         (defaultHakyllWriterOptions { writerHighlight = False })
+         (pandocIncludeFilter extrafiles)
          >>= loadAndApplyTemplate templateIdent context
          >>= loadAndApplyTemplate "templates/default.html" context
          >>= relativizeUrls

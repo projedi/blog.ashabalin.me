@@ -12,7 +12,7 @@ for equality at *compile time*.
 
 This is how Agda standard library defines the latter
 ([source code](https://github.com/agda/agda-stdlib/blob/v0.9/src/Relation/Binary/Core.agda#L151)):
-```agda
+```language-agda
 data _≡_ {a} {A : Set a} (x : A) : A → Set a where
   refl : x ≡ x
 
@@ -21,10 +21,10 @@ data _≡_ {a} {A : Set a} (x : A) : A → Set a where
 ```
 
 Now let's try to prove a simple property of vectors: `xs ++ [] = xs`:
-```{.agda include="Agda1.agda"}
+```{.language-agda include="Agda1.agda"}
 ```
 And we immediatly fail with an error:
-```
+```{.language-agda}
 n != n .Data.Nat.+ 0 of type .Data.Nat.ℕ
 when checking that the expression xs has type
 Vec A (n .Data.Nat.+ 0)
@@ -37,7 +37,7 @@ way to introduce a proof of `n + 0 ≡ n` into the typechecker here.
 But let's look at what Idris does here. Here's a definition (I am lying, it is
 actually hardcoded in the compiler
 [here](https://github.com/idris-lang/Idris-dev/blob/v0.9.15.1/src/Idris/AbsSyntaxTree.hs#L1098)):
-```idris
+```language-idris
 data (=) : (x : a) -> (y : b) -> Type where
   Refl : x = x
 ```
@@ -47,7 +47,7 @@ Idris will try to use homogenous version first (i.e. when `b = a`) and if it fai
 will fall back to the heterogenous one. I do not know why it does that.
 
 We can now write this:
-```{.idris include="Idris1.idr"}
+```{.language-idris include="Idris1.idr"}
 ```
 A thing to note is that we had to write a helper `cons_cong` instead of using `cong (::)`.
 Here is why: `cong : (f : a -> b) -> (x = y) -> (f x = f y)`. `f` has to be the same. That is,
@@ -58,7 +58,7 @@ Here is why: `cong : (f : a -> b) -> (x = y) -> (f x = f y)`. `f` has to be the 
 P.S.
 For doing some propositional equality on vectors Agda has a special operator `_≈_`
 ([found here](https://github.com/agda/agda-stdlib/blob/v0.9/src/Data/Vec/Equality.agda#L24)):
-```agda
+```language-agda
 data _≈_ : ∀ {n¹} → Vec A n¹ →
            ∀ {n²} → Vec A n² → Set (s₁ ⊔ s₂) where
   []-cong  : [] ≈ []
@@ -68,5 +68,5 @@ data _≈_ : ∀ {n¹} → Vec A n¹ →
                x¹ ∷ xs¹ ≈ x² ∷ xs²
 ```
 Using it we can write our lemma as follows
-```{.agda include="Agda2.agda"}
+```{.language-agda include="Agda2.agda"}
 ```
