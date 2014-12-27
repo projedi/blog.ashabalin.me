@@ -27,6 +27,10 @@ main = hakyll $ do
       route idRoute
       compile compressCssCompiler
 
+   match "javascript/*" $ do
+      route idRoute
+      compile copyFileCompiler
+
    match "posts/**/*" extraPostFilesRules
    match "posts/*" $ postRules "templates/post.html" postContext
    match "drafts/**/*" extraPostFilesRules

@@ -1,0 +1,130 @@
+/*
+ * Based on prism.js default theme
+ * Using solarized light colorscheme: http://ethanschoonover.com/solarized
+ */
+code,
+pre {
+	color: #657b83;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', monospace;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre::-moz-selection, pre ::-moz-selection,
+code::-moz-selection, code ::-moz-selection {
+	text-shadow: none;
+	background: #eee8d5;
+}
+
+pre::selection, pre ::selection,
+code::selection, code ::selection {
+	text-shadow: none;
+	background: #eee8d5;
+}
+
+@media print {
+	code,
+	pre {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code,
+pre {
+	background: #fdf6e3;
+}
+
+/* Inline code */
+:not(pre) > code {
+	padding: .1em;
+	border-radius: .3em;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #93a1a1;
+}
+
+.token.punctuation {
+	color: #657b83;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #2aa198;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #2aa198;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #2aa198;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #859900;
+}
+
+.token.function {
+	color: #268bd2;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #268bd2;
+}
+
+.token.important {
+	font-weight: bold;
+}
+
+.token.entity {
+	cursor: help;
+}
+
