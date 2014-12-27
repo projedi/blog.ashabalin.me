@@ -25,7 +25,9 @@ main = hakyll $ do
 
    match "css/*" $ do
       route idRoute
-      compile compressCssCompiler
+      -- TODO: Should use compressCssCompiler but there is a bug:
+      -- https://github.com/jaspervdj/hakyll/issues/323
+      compile copyFileCompiler
 
    match "javascript/*" $ do
       route idRoute
