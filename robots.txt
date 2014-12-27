@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /drafts.html
+Disallow: /drafts/

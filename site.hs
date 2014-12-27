@@ -15,6 +15,10 @@ import Hakyll
 
 main :: IO ()
 main = hakyll $ do
+   match "robots.txt" $ do
+      route idRoute
+      compile copyFileCompiler
+
    match "images/*" $ do
       route idRoute
       compile copyFileCompiler
