@@ -34,8 +34,8 @@ main = hakyll $ do
       route idRoute
       compile copyFileCompiler
 
-   handlePosts "Posts" "posts" "index.html" "post-context"
-   handlePosts "Drafts" "drafts" "drafts/index.html" "draft-context"
+   handlePosts "Posts" "posts" ["index.html", "posts/index.html"] "post-context"
+   handlePosts "Drafts" "drafts" ["drafts/index.html"] "draft-context"
 
    match "templates/*" $ compile templateCompiler
 
@@ -50,8 +50,8 @@ extraMiscPostFiles :: String -> [Pattern]
 extraMiscPostFiles postDir = map (\ext -> fromGlob $ postDir </> "**" </> ("*." ++ ext))
    [ ]
 
-handlePosts :: String -> FilePath -> Identifier -> String -> Rules ()
-handlePosts title postDir indexIdent bodyClasses = do
+handlePosts :: String -> FilePath -> [Identifier] -> String -> Rules ()
+handlePosts title postDir indexIdents bodyClasses = do
    forM_ (extraTextPostFiles postDir) $ \pat ->
       match pat $ do
          route idRoute
@@ -74,7 +74,7 @@ handlePosts title postDir indexIdent bodyClasses = do
             >>= loadAndApplyTemplate "templates/post.html" postContext
             >>= loadAndApplyTemplate "templates/default.html" postContext
             >>= relativizeUrls
-   create [indexIdent] $ do
+   create indexIdents $ do
       route idRoute
       compile $ do
          posts <- recentFirst =<< loadAll (fromGlob $ postDir ++ "/*.markdown")
