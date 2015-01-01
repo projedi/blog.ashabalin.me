@@ -57,11 +57,17 @@ will fall back to the heterogenous one. I do not know why it does that.
 We can now write this:
 ```{.language-idris include="Idris1.idr"}
 ```
-A thing to note is that we had to write a helper `cons_cong` instead of using `cong (::)`.
-Here is why: `cong : (f : a -> b) -> (x = y) -> (f x = f y)`. `f` has to be the same. That is,
-`(::)` has to be the same but it is not because on the left side of `(=)`
-`(::) : a -> Vect (n + 0) a -> Vect (S (n + 0)) a` and on the right side
-`(::) : a -> Vect n a -> Vect (S n) a`. `cons_cong` lifts this requirement.
+A thing to note is that we had to write a helper `cons_cong` instead of using `cong`.
+
+Let's look at `(::)` in `cons_cong`. The one on the left has type
+`a -> Vect (n + 0) a -> Vect (S (n + 0)) a` while the one on the right `a -> Vect n a -> Vect (S n) a`.
+So these are two *different* `(::)`.
+Now consider the type of `cong` defined in
+[Prelude.Basics](https://github.com/idris-lang/Idris-dev/blob/v0.9.15.1/libs/prelude/Prelude/Basics.idr#L46):
+```language-idris
+cong : {f : t -> u} -> (a = b) -> f a = f b
+```
+`f` on the left is exactly `f` on the right. And this is why we cannot use `cong` in our situation.
 
 Special equality for `Vec` in Agda
 ----------------------------------
