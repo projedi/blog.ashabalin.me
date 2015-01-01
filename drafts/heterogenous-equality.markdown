@@ -25,7 +25,7 @@ data _≡_ {a} {A : Set a} (x : A) : A → Set a where
 {-# BUILTIN REFL refl #-}
 ```
 
-Now let's try to prove a simple property of vectors: `xs ++ [] = xs`:
+Now let's try to prove a simple property of vectors `xs ++ [] = xs`:
 ```{.language-agda include="Agda1.agda"}
 ```
 And we immediatly fail with an error:
