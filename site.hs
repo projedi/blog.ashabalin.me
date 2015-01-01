@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 
 import Control.Applicative
+import Control.Monad
 
 import Control.Exception(SomeException, catch)
 import Data.Monoid((<>))
@@ -41,14 +42,27 @@ main = hakyll $ do
 tryWithDefault :: IO a -> a -> IO a
 tryWithDefault m d = catch m (\(_ :: SomeException) -> return d)
 
+extraTextPostFiles :: String -> [Pattern]
+extraTextPostFiles postDir = map (\ext -> fromGlob $ postDir </> "**" </> ("*." ++ ext))
+   [ "agda", "idr" ]
+
+extraMiscPostFiles :: String -> [Pattern]
+extraMiscPostFiles postDir = map (\ext -> fromGlob $ postDir </> "**" </> ("*." ++ ext))
+   [ ]
+
 handlePosts :: String -> FilePath -> Identifier -> Rules ()
 handlePosts title postDir indexIdent = do
-   match (fromGlob $ postDir </> "**/*") $ do
-      route idRoute
-      compile $ do
-         path <- drop 2 <$> getResourceFilePath -- drop leading "./"
-         contents <- unsafeCompiler $ (Text.unpack <$> Text.readFile path) `tryWithDefault` ""
-         return $ Item (fromFilePath path) contents
+   forM_ (extraTextPostFiles postDir) $ \pat ->
+      match pat $ do
+         route idRoute
+         compile $ do
+            path <- drop 2 <$> getResourceFilePath -- drop leading "./"
+            contents <- unsafeCompiler $ (Text.unpack <$> Text.readFile path) `tryWithDefault` ""
+            return $ Item (fromFilePath path) contents
+   forM_ (extraMiscPostFiles postDir) $ \pat ->
+      match pat $ do
+         route idRoute
+         compile copyFileCompiler
    match (fromGlob $ postDir </> "*.markdown") $ do
       route $ customRoute $ (</> "index.html") . dropExtension . toFilePath
       compile $ do
