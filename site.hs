@@ -6,7 +6,7 @@ import Control.Exception(SomeException, catch)
 import Data.Monoid((<>))
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
-import System.FilePath((</>), dropExtension)
+import System.FilePath((</>), dropExtension, splitFileName)
 
 import Text.Pandoc(Block(..), Pandoc, WriterOptions(..))
 import Text.Pandoc.Walk(walk)
@@ -109,7 +109,17 @@ indexContext posts =  listField "posts" postContext (return posts)
 
 postContext :: Context String
 postContext =  dateField "date" "%B %e, %Y"
+            <> field "url" stripIndex
             <> defaultContext
 
 draftContext :: Context String
-draftContext = defaultContext
+draftContext =  field "url" stripIndex
+             <> defaultContext
+
+stripIndex :: Item a -> Compiler String
+stripIndex = fmap (maybe empty (toUrl . go)) . getRoute . itemIdentifier
+ where go :: FilePath -> String
+       go name =
+          case splitFileName name of
+             (dir, "index.html") -> dir
+             _ -> name
