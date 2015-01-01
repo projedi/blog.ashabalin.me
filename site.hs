@@ -33,52 +33,40 @@ main = hakyll $ do
       route idRoute
       compile copyFileCompiler
 
-   match "posts/**/*" extraPostFilesRules
-   match "posts/*" $ postRules "templates/post.html" postContext
-   match "drafts/**/*" extraPostFilesRules
-   match "drafts/*.markdown" $ postRules "templates/draft.html" draftContext
-
-   create ["index.html"] $ do
-      route idRoute
-      compile $ do
-         posts <- recentFirst =<< loadAll "posts/*.markdown"
-         makeItem "" >>= loadAndApplyTemplate "templates/index.html" (indexContext posts)
-                     >>= loadAndApplyTemplate "templates/default.html" (indexContext posts)
-                     >>= relativizeUrls
-
-   create ["drafts/index.html"] $ do
-      route idRoute
-      compile $ do
-         posts <- loadAll "drafts/*.markdown"
-         makeItem "" >>= loadAndApplyTemplate "templates/drafts.html" (draftsContext posts)
-                     >>= loadAndApplyTemplate "templates/default.html" (draftsContext posts)
-                     >>= relativizeUrls
+   handlePosts "Posts" "posts" "index.html"
+   handlePosts "Drafts" "drafts" "drafts/index.html"
 
    match "templates/*" $ compile templateCompiler
 
 tryWithDefault :: IO a -> a -> IO a
 tryWithDefault m d = catch m (\(_ :: SomeException) -> return d)
 
-extraPostFilesRules :: Rules ()
-extraPostFilesRules = do
-   route idRoute
-   compile $ do
-      path <- drop 2 <$> getResourceFilePath -- drop leading "./"
-      contents <- unsafeCompiler $ (Text.unpack <$> Text.readFile path) `tryWithDefault` ""
-      return $ Item (fromFilePath path) contents
-
-postRules :: Identifier -> Context String -> Rules ()
-postRules templateIdent context = do
-   route $ customRoute $ (</> "index.html") . dropExtension . toFilePath
-   compile $ do
-      extrafiles <- getExtraPostFiles
-      pandocCompilerWithTransform
-         defaultHakyllReaderOptions
-         (defaultHakyllWriterOptions { writerHighlight = False })
-         (pandocIncludeFilter extrafiles)
-         >>= loadAndApplyTemplate templateIdent context
-         >>= loadAndApplyTemplate "templates/default.html" context
-         >>= relativizeUrls
+handlePosts :: String -> FilePath -> Identifier -> Rules ()
+handlePosts title postDir indexIdent = do
+   match (fromGlob $ postDir </> "**/*") $ do
+      route idRoute
+      compile $ do
+         path <- drop 2 <$> getResourceFilePath -- drop leading "./"
+         contents <- unsafeCompiler $ (Text.unpack <$> Text.readFile path) `tryWithDefault` ""
+         return $ Item (fromFilePath path) contents
+   match (fromGlob $ postDir </> "*.markdown") $ do
+      route $ customRoute $ (</> "index.html") . dropExtension . toFilePath
+      compile $ do
+         extrafiles <- getExtraPostFiles
+         pandocCompilerWithTransform
+            defaultHakyllReaderOptions
+            (defaultHakyllWriterOptions { writerHighlight = False })
+            (pandocIncludeFilter extrafiles)
+            >>= loadAndApplyTemplate "templates/post.html" postContext
+            >>= loadAndApplyTemplate "templates/default.html" postContext
+            >>= relativizeUrls
+   create [indexIdent] $ do
+      route idRoute
+      compile $ do
+         posts <- recentFirst =<< loadAll (fromGlob $ postDir ++ "/*.markdown")
+         makeItem "" >>= loadAndApplyTemplate "templates/posts.html" (postListContext title posts)
+                     >>= loadAndApplyTemplate "templates/default.html" (postListContext title posts)
+                     >>= relativizeUrls
 
 getExtraPostFiles :: Compiler [(String, String)]
 getExtraPostFiles = do
@@ -97,24 +85,16 @@ pandocIncludeFilter extrafiles = walk go
              flip lookup extrafiles =<< lookup "include" namevals
        go b = b
 
-draftsContext :: [Item String] -> Context String
-draftsContext posts =  listField "posts" draftContext (return posts)
-                    <> constField "title" "Drafts"
-                    <> defaultContext
-
-indexContext :: [Item String] -> Context String
-indexContext posts =  listField "posts" postContext (return posts)
-                   <> constField "title" "Stuff"
-                   <> defaultContext
+postListContext :: String -> [Item String] -> Context String
+postListContext title posts
+   =  listField "posts" postContext (return posts)
+   <> constField "title" title
+   <> defaultContext
 
 postContext :: Context String
 postContext =  dateField "date" "%B %e, %Y"
             <> field "url" stripIndex
             <> defaultContext
-
-draftContext :: Context String
-draftContext =  field "url" stripIndex
-             <> defaultContext
 
 stripIndex :: Item a -> Compiler String
 stripIndex = fmap (maybe empty (toUrl . go)) . getRoute . itemIdentifier
