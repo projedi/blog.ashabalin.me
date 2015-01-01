@@ -2,14 +2,6 @@
 title: Heterogenous equality
 ---
 
-Dependently typed languages have two types of equality: **propositional** and **decidable**.
-
-* **Decidable equality** is just like equality from all the other programming languages:
-  we have a function that checks its 2 arguments for equality at *run time*.
-* **Propositonal equality** is expressed by having a type that states the equality of
-  its 2 arguments and terms of this type are thus proofs of the fact. It allows us
-  to check for equality at *compile time*.
-
 Let's look at the implementation of propositional equality in Agda and in Idris.
 
 Equality in Agda
