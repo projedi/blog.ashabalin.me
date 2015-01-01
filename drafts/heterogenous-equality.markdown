@@ -1,5 +1,6 @@
 ---
 title: Heterogenous equality
+date: 2015-01-01
 ---
 
 Let's look at the implementation of propositional equality in Agda and in Idris.
