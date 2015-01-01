@@ -34,8 +34,8 @@ main = hakyll $ do
       route idRoute
       compile copyFileCompiler
 
-   handlePosts "Posts" "posts" "index.html"
-   handlePosts "Drafts" "drafts" "drafts/index.html"
+   handlePosts "Posts" "posts" "index.html" "post-context"
+   handlePosts "Drafts" "drafts" "drafts/index.html" "draft-context"
 
    match "templates/*" $ compile templateCompiler
 
@@ -50,8 +50,8 @@ extraMiscPostFiles :: String -> [Pattern]
 extraMiscPostFiles postDir = map (\ext -> fromGlob $ postDir </> "**" </> ("*." ++ ext))
    [ ]
 
-handlePosts :: String -> FilePath -> Identifier -> Rules ()
-handlePosts title postDir indexIdent = do
+handlePosts :: String -> FilePath -> Identifier -> String -> Rules ()
+handlePosts title postDir indexIdent bodyClasses = do
    forM_ (extraTextPostFiles postDir) $ \pat ->
       match pat $ do
          route idRoute
@@ -78,9 +78,19 @@ handlePosts title postDir indexIdent = do
       route idRoute
       compile $ do
          posts <- recentFirst =<< loadAll (fromGlob $ postDir ++ "/*.markdown")
-         makeItem "" >>= loadAndApplyTemplate "templates/posts.html" (postListContext title posts)
-                     >>= loadAndApplyTemplate "templates/default.html" (postListContext title posts)
+         makeItem "" >>= loadAndApplyTemplate "templates/posts.html" (postListContext posts)
+                     >>= loadAndApplyTemplate "templates/default.html" (postListContext posts)
                      >>= relativizeUrls
+ where postListContext :: [Item String] -> Context String
+       postListContext posts =  listField "posts" postContext (return posts)
+                             <> constField "title" title
+                             <> constField "body_classes" bodyClasses
+                             <> defaultContext
+       postContext :: Context String
+       postContext =  dateField "date" "%B %e, %Y"
+                   <> field "url" stripIndex
+                   <> constField "body_classes" bodyClasses
+                   <> defaultContext
 
 getExtraPostFiles :: Compiler [(String, String)]
 getExtraPostFiles = do
@@ -98,17 +108,6 @@ pandocIncludeFilter extrafiles = walk go
           maybe cb (CodeBlock props) $
              flip lookup extrafiles =<< lookup "include" namevals
        go b = b
-
-postListContext :: String -> [Item String] -> Context String
-postListContext title posts
-   =  listField "posts" postContext (return posts)
-   <> constField "title" title
-   <> defaultContext
-
-postContext :: Context String
-postContext =  dateField "date" "%B %e, %Y"
-            <> field "url" stripIndex
-            <> defaultContext
 
 stripIndex :: Item a -> Compiler String
 stripIndex = fmap (maybe empty (toUrl . go)) . getRoute . itemIdentifier
