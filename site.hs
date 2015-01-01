@@ -46,7 +46,7 @@ main = hakyll $ do
                      >>= loadAndApplyTemplate "templates/default.html" (indexContext posts)
                      >>= relativizeUrls
 
-   create ["drafts.html"] $ do
+   create ["drafts/index.html"] $ do
       route idRoute
       compile $ do
          posts <- loadAll "drafts/*.markdown"
