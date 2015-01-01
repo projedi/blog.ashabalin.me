@@ -69,7 +69,7 @@ extraPostFilesRules = do
 
 postRules :: Identifier -> Context String -> Rules ()
 postRules templateIdent context = do
-   route $ setExtension "html"
+   route $ customRoute $ (</> "index.html") . dropExtension . toFilePath
    compile $ do
       extrafiles <- getExtraPostFiles
       pandocCompilerWithTransform
