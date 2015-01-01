@@ -1,6 +1,6 @@
 ---
-title: Heterogenous equality
-date: 2015-01-01
+title: Heterogeneous equality
+date: 2015-01-02
 ---
 
 Let's look at the implementation of propositional equality in Agda and in Idris.
@@ -43,9 +43,9 @@ data (=) : (x : a) -> (y : b) -> Type where
   Refl : x = x
 ```
 Notice that two arguments of `(=)` are of different types! This is because Idris has
-**heterogenous** equality instead of **homogenous** like Agda. Actually it is somewhat mixed:
-Idris will try to use homogenous version first (i.e. when `b = a`) and if it fails to typecheck
-will fall back to the heterogenous one. I do not know why it does that.
+**heterogeneous** equality instead of **homogeneous** like Agda. Actually it is somewhat mixed:
+Idris will try to use homogeneous version first (i.e. when `b = a`) and if it fails to typecheck
+will fall back to the heterogeneous one. I do not know why it does that.
 
 We can now write this:
 ```{.language-idris include="Idris1.idr"}
