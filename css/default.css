@@ -3,27 +3,18 @@ body.draft-context {
 }
 
 nav {
-   width: 10em;
+   width: 12em;
    float: left;
    text-align: center;
 }
 
 div#body {
    max-width: 50em;
-   margin-left: 12em;
+   margin-left: 14em;
    margin-right: auto;
 }
 
 article {
-}
-
-footer {
-    float: right;
-    border-top: solid 2px black;
-    color: #555;
-    font-size: small;
-    margin-top: 2em;
-    padding: 1em;
 }
 
 div.info {
@@ -43,4 +34,19 @@ div#nav-social-media {
 
 div#nav-social-media a {
    text-decoration: none;
+}
+
+div#license {
+   margin-top: 1em;
+   font-size: small;
+   text-align: left;
+}
+
+div#credits {
+   margin-top: 1em;
+   padding-top: 0.5em;
+   border-top: solid 2px black;
+   font-size: small;
+   color: #555;
+   text-align: left;
 }
