@@ -3,14 +3,14 @@ body.draft-context {
 }
 
 nav {
-   width: 8em;
+   width: 10em;
    float: left;
    text-align: center;
 }
 
 div#body {
    max-width: 50em;
-   margin-left: 10em;
+   margin-left: 12em;
    margin-right: auto;
 }
 
@@ -31,4 +31,16 @@ div.info {
    font-style: italic;
    font-size: small;
    text-align: right;
+}
+
+div#nav-social-media {
+   margin-top: 1em;
+   padding-top: 0.5em;
+   border-top: solid 2px black;
+   text-align: left;
+   line-height: 1.2;
+}
+
+div#nav-social-media a {
+   text-decoration: none;
 }
