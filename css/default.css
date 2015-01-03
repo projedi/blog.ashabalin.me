@@ -2,15 +2,14 @@ body.draft-context {
    background: #aaa;
 }
 
-nav {
-   width: 12em;
+div#sidebar {
+   width: 10em;
    float: left;
-   text-align: center;
 }
 
 div#body {
    max-width: 50em;
-   margin-left: 14em;
+   margin-left: 12em;
    margin-right: auto;
 }
 
@@ -24,29 +23,25 @@ div.info {
    text-align: right;
 }
 
-div#nav-social-media {
+div#social-media {
    margin-top: 1em;
+   margin-bottom: 0.5em;
    padding-top: 0.5em;
+   padding-bottom: 0.5em;
    border-top: solid 2px black;
-   text-align: left;
+   border-bottom: solid 2px black;
    line-height: 1.2;
 }
 
-div#nav-social-media a {
+div#sidebar a {
    text-decoration: none;
 }
 
-div#license {
-   margin-top: 1em;
-   font-size: small;
-   text-align: left;
+div#sidebar span.fa {
+   color: initial;
 }
 
 div#credits {
-   margin-top: 1em;
-   padding-top: 0.5em;
-   border-top: solid 2px black;
    font-size: small;
    color: #555;
-   text-align: left;
 }
