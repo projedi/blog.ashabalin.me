@@ -45,3 +45,20 @@ div#credits {
    font-size: small;
    color: #555;
 }
+
+.nav-button {
+   padding: 0.5em 1em 0.5em;
+   display: block;
+}
+
+.nav-button .fa {
+   float: left;
+}
+
+.nav-button-text {
+   text-align: center;
+   display: block;
+   color: black;
+   font-family: sans-serif;
+   font-weight: bolder;
+}
