@@ -69,7 +69,7 @@ handlePosts title postDir indexIdents bodyClasses = do
          extrafiles <- getExtraPostFiles
          pandocCompilerWithTransform
             defaultHakyllReaderOptions
-            (defaultHakyllWriterOptions { writerHighlight = False })
+            defaultHakyllWriterOptions
             (pandocIncludeFilter extrafiles)
             >>= loadAndApplyTemplate "templates/post.html" postContext
             >>= loadAndApplyTemplate "templates/default.html" postContext

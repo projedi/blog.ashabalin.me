@@ -10,7 +10,7 @@ Equality in Agda
 
 This is how Agda defines equality in the
 [Relation.Binary.Core](https://github.com/agda/agda-stdlib/blob/v0.9/src/Relation/Binary/Core.agda#L151):
-```language-agda
+```agda
 data _≡_ {a} {A : Set a} (x : A) : A → Set a where
   refl : x ≡ x
 
@@ -19,10 +19,10 @@ data _≡_ {a} {A : Set a} (x : A) : A → Set a where
 ```
 
 Now let's try to prove a simple property of vectors `xs ++ [] = xs`:
-```{.language-agda include="Agda1.agda"}
+```{.agda include="Agda1.agda"}
 ```
 And we immediatly fail with an error:
-```{.language-agda}
+```{.agda}
 n != n .Data.Nat.+ 0 of type .Data.Nat.ℕ
 when checking that the expression xs has type
 Vec A (n .Data.Nat.+ 0)
@@ -38,7 +38,7 @@ Equality in Idris
 Let's look how Idris handles this problem. Here's a definition (I am lying, it is
 actually hardcoded in the compiler
 [here](https://github.com/idris-lang/Idris-dev/blob/v0.9.15.1/src/Idris/AbsSyntaxTree.hs#L1098)):
-```language-idris
+```idris
 data (=) : (x : a) -> (y : b) -> Type where
   Refl : x = x
 ```
@@ -48,7 +48,7 @@ Idris will try to use homogeneous version first (i.e. when `b = a`) and if it fa
 will fall back to the heterogeneous one. I do not know why it does that.
 
 We can now write this:
-```{.language-idris include="Idris1.idr"}
+```{.idris include="Idris1.idr"}
 ```
 A thing to note is that we had to write a helper `cons_cong` instead of using `cong`.
 
@@ -57,7 +57,7 @@ Let's look at `(::)` in `cons_cong`. The one on the left has type
 So these are two *different* `(::)`.
 Now consider the type of `cong` defined in
 [Prelude.Basics](https://github.com/idris-lang/Idris-dev/blob/v0.9.15.1/libs/prelude/Prelude/Basics.idr#L46):
-```language-idris
+```idris
 cong : {f : t -> u} -> (a = b) -> f a = f b
 ```
 `f` on the left is exactly `f` on the right. And this is why we cannot use `cong` in our situation.
@@ -67,7 +67,7 @@ Special equality for `Vec` in Agda
 
 To actually express propositional equality on vectors Agda has a special operator `_≈_` in
 [Data.Vec.Equality](https://github.com/agda/agda-stdlib/blob/v0.9/src/Data/Vec/Equality.agda#L24):
-```language-agda
+```agda
 data _≈_ : ∀ {n¹} → Vec A n¹ →
            ∀ {n²} → Vec A n² → Set (s₁ ⊔ s₂) where
   []-cong  : [] ≈ []
@@ -77,5 +77,5 @@ data _≈_ : ∀ {n¹} → Vec A n¹ →
                x¹ ∷ xs¹ ≈ x² ∷ xs²
 ```
 Using it we can write our lemma as follows:
-```{.language-agda include="Agda2.agda"}
+```{.agda include="Agda2.agda"}
 ```

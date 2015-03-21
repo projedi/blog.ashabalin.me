@@ -2,6 +2,7 @@
  * Based on prism.js default theme
  * Using solarized light colorscheme: http://ethanschoonover.com/solarized
  */
+
 code,
 pre {
 	color: #657b83;
@@ -39,24 +40,30 @@ pre {
 	overflow: auto;
 }
 
-.token.comment {
+.co {
 	color: #93a1a1;
 }
 
-.token.punctuation {
+.ot {
 	color: #657b83;
 }
 
-.token.number,
-.token.string,
-.token.char {
+.dv,
+.bn,
+.fl,
+.st,
+.ch {
 	color: #2aa198;
 }
 
-.token.operator {
+.fu {
 	color: #2aa198;
 }
 
-.token.keyword {
+.dt {
+	color: #cb4b16;
+}
+
+.kw {
 	color: #859900;
 }
